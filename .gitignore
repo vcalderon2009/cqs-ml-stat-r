@@ -40,3 +40,7 @@ rsconnect/
 *.csv
 *.data
 *.sqlite
+
+###
+### Keeping this documents
+!/presentations/*.pdf
