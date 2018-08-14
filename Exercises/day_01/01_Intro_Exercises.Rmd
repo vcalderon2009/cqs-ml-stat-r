@@ -1,0 +1,100 @@
+---
+title: "Day 01 - Exercise 01 - Intro Exercises"
+author: "Victor Calderon"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+```{r echo=FALSE}
+rm(list = ls())
+```
+
+
+This are the responses/answers to the problems posed by the exercises in the
+`Intro.R` file.
+
+## Exercise 1.1
+
+> Look through the help file for `plot`, then recreate any figure above and set
+> the subtitle to `subtitle`.
+
+```{r}
+help(plot)
+```
+
+Now we can recreate the figure as in `intro.R`:
+```{r}
+x = rnorm(1000)
+y = rnorm(1000)
+plot(x, y, sub = 'subtitle')
+```
+
+
+---
+
+## Exercise 1.2
+
+> Find two different expressions to create a 3 x 3 (row x col) matrix with the
+> values 2, 4, and 6 in the rows.
+
+---
+
+## Exercise 1.3
+
+> What happens when you collate (`c()`) a list and a vector? List and a list?
+
+---
+
+## Exercise 1.4
+
+> Install and load the `manipulate` package.
+
+---
+
+## Exercise 1.5
+
+> Use the `manipulate` function to interactively vary the `phi` argument to
+> `persp` in the above example. Use `persp(x,y,fa,theta=30,phi=phi_slider)` 
+> as the first argument (see the `manipulate` help file and examples).
+
+---
+
+## Exercise 1.6
+
+> Generate 10 values from the normal distribution with mean 5 and sd 3 and
+> compute their sample mean.
+
+---
+
+## Exercise 1.7
+
+> Use the `replicate` function to repeat item 6. 1000 times.
+
+---
+
+## Exercise 1.8
+
+> Use the `hist` function to plot a histogram of the sample
+> means from item 7. Repeat where `N = 50` instead of `10`. Use
+> the `add = TRUE` and `col = "red"` arguments to the 'hist'
+> function to add the second histogram to the first for
+> for comparison.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
