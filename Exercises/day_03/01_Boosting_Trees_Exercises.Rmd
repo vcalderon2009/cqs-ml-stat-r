@@ -1,0 +1,140 @@
+---
+title: "Day 03 - Exercise 01 - Boosting Trees"
+author: "Victor Calderon"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Removing previous environment
+rm(list = ls())
+
+## Loading packages
+
+```
+
+## Preamble
+The exercises here are taken from the `boosting-trees.R` file in the 
+`scripts/day_03` directory.
+
+In order to be able to run the code in here, you need to run the following:
+
+```r
+## Installing packages
+install.packages('rpart')
+install.packages('mlbench')
+install.packages('caret')
+install.packages('gbm')
+
+## Loading packages
+library('rpart')
+library('mlbench')
+library('caret')
+library('gbm')
+```
+
+These packages are needed in order to run some of the commands.
+
+We can now **load** the necessary libraries:
+```{r echo=TRUE}
+library('rpart')
+library('mlbench')
+library('gbm')
+library('caret')
+```
+
+
+## Exercise 1
+
+> 1. Use the 'cv.folds' option to 'gbm' to perform 10-fold cross-validation 
+> of the 'gbm' model for breast cancer above by varying 'n.trees'. Select
+> an optimal 'n.trees' and compute the test error using the testing data.
+
+```{r}
+# Defining dataset
+data('BreastCancer')
+BreastCancer$y <- ifelse(BreastCancer$Class == "malignant", 1, -1)
+BreastCancer$Class <- NULL
+BreastCancer$Id <- NULL
+head(BreastCancer)
+```
+
+We now create a *training* and *testing* datasets, and compute the estimator
+using the **GBM** classifier:
+
+We define a function `breast_err_calculation` that will modify the data, and
+will depend on the number of trees and the number of K-fold cross-validations.
+
+```{r}
+breast_err_calculation <- function(dataset, ntrees = 1000, cv_folds = 10){
+  # Creating fraction of the training/testing dataset
+  trn_idx <- sample(1:nrow(dataset), size = 0.8*nrow(dataset))
+  bc_trn <- dataset[ trn_idx,]
+  bc_tst <- dataset[-trn_idx,]
+  ## GBM Classifier
+  bc_trn$y <- (bc_trn$y + 1)/2 ## convert (-1, 1) to (0, 1)
+  bc_tst$y <- (bc_tst$y + 1)/2 ## convert (-1, 1) to (0, 1)
+  # Computing the GBM classifier
+  bc_fit <- gbm(y ~ .,
+                distribution = 'bernoulli',
+                data=bc_trn,
+                n.trees = ntrees,
+                cv.folds = cv_folds)
+  # Estimating errors
+  pre_tst <- predict(bc_fit, bc_tst, n.trees=bc_fit$n.trees, type='response') > 0.5
+  gmb_err_mean <- mean(pre_tst == bc_tst$y)
+  
+  return(gmb_err_mean)
+}
+```
+
+We can now compute the errors for each of the different types of `n.trees`:
+
+```{r}
+## Looping over different values of `n_trees`
+
+n_trees_arr <- seq(100, 1000, 200)
+gm_err_arr  <- rep(0, length(n_trees_arr))
+
+for (x in 1:length(n_trees_arr)) {
+  gm_err_arr[x] = breast_err_calculation(BreastCancer, ntrees = n_trees_arr[x])
+}
+```
+Now we can go ahead and plot the results of `n_trees_arr` and `gm_err_arr`:
+
+```{r}
+plot(n_trees_arr,
+     gm_err_arr,
+     xlab = 'Number of trees',
+     ylab = 'Test error',
+     xlim = c(min(n_trees_arr), max(n_trees_arr)),
+     ylim = c(0,1))
+```
+
+
+
+---
+
+## Exercise 2
+
+> Using the income data from previous examples to fit a boosted tree ('gbm') for
+> for predicting income, given education and seniority. Be sure to read
+> through the help file to make the appropriate modifications.
+```r
+inc <- read.csv(url("http://www-bcf.usc.edu/~gareth/ISL/Income2.csv"),
+                header=T, row.names = 1)
+```
+
+---
+
+## Exercise 3
+
+> Create a figure using the 'persp' function to display the prediction surface
+> of the boosted tree model trained in part 1. (hint: use the 'plot_inc_data'
+> function from previous lab)
+
+---
+
+
