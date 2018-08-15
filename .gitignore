@@ -45,3 +45,4 @@ rsconnect/
 ### Keeping this documents
 !/presentations/*.pdf
 !/Exercises/day_*/*.pdf
+.Rproj.user

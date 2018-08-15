@@ -95,7 +95,11 @@ We can now compute the errors for each of the different types of `n.trees`:
 ```{r}
 ## Looping over different values of `n_trees`
 
-n_trees_arr <- seq(100, 1000, 200)
+n_init = 100
+n_end  = 1000
+n_step = 200
+
+n_trees_arr <- seq(n_init, n_end, n_step)
 gm_err_arr  <- rep(0, length(n_trees_arr))
 
 for (x in 1:length(n_trees_arr)) {
@@ -112,8 +116,6 @@ plot(n_trees_arr,
      xlim = c(min(n_trees_arr), max(n_trees_arr)),
      ylim = c(0,1))
 ```
-
-
 
 ---
 
