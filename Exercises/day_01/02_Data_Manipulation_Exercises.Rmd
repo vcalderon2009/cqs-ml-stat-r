@@ -1,0 +1,123 @@
+---
+title: "Day 01 - Exercise 02 - Data Manipulation"
+author: "Victor Calderon"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+```{r echo=FALSE}
+rm(list = ls())
+library('reshape2')
+```
+
+
+This are the responses/answers to the problems posed by the exercises in the
+`data-manipulation` file.
+
+## Preamble
+
+> Suppose the data below represent body weight measurements 
+> for six participants in a weight loss intervention program,
+> at three follow-up time points (t0, t1, and t2)
+
+```{r}
+dat <- data.frame(id  = c( 1, 2, 3, 4, 5, 6),
+                  age = c(47,52,35,28,62,44),
+                  sex = factor(c("M","M","F","M","F","F")),
+                  wt_t0 = c(278, 340, 239, 290, 244, 220),
+                  wt_t1 = c(230, 302, 231, 277, 245, 201),
+                  wt_t2 = c(211, 295, 231, 282, 243, 182))
+
+head(dat)
+```
+
+---
+
+## Exercise 1
+
+> 1. Convert these data to long format so that there is only one variable
+> with weight measurements, and three rows per participant ('id')
+
+Converting to *long format*:
+
+```{r}
+data_melt <- melt(dat, id.vars=c('id','age','sex'))
+head(data_melt)
+```
+We can examine the types of variables:
+```{r}
+unique(data_melt$variable)
+```
+and showing the lines for *Participant 1*
+```{r}
+nrows_per_participant <- sum(ifelse(data_melt$id == 1, TRUE, FALSE))
+nrows_per_participant
+```
+This shows that there are **"`r nrows_per_participant`"** rows per participant!
+
+---
+
+## Exercise 2
+
+> Convert back to wide format, averaging across participant sex 
+> (resulting data frame should have one row for males and one for females)
+
+Converting back to *wide* format:
+```{r}
+dcast(data_melt, sex ~ variable, mean)
+```
+
+---
+
+## Exercise 3
+
+> Suppose there is a second data frame that contains additional information
+> on participants and others, including marital status and other variables.
+> Add marital status (only) to the above data (either the wide or long version)
+> using the 'merge' command. What type of 'join' is this?
+
+```{r}
+demo <- data.frame(id = 1:20,
+                   married = sample(c(T,F), 20, replace=TRUE, prob=c(0.5,0.5)),
+                   income  = rnorm(20, 75000, 10000),
+                   state   = sample(state.abb, 20, replace=TRUE))
+```
+
+
+
+---
+
+## Exercise 4
+
+
+> Suppose that a measure of 'irritability' (scale from 0 to 10) was also
+> collected at each time point (see data below).
+> Use melt and cast to convert this data to long format with three
+> rows per participant, and one column for weights, and one column 
+> for irritability scores. (hint: after melting, you must add a 
+> 'measure' variable to indicate whether the corresponding value 
+> is a weight measurement or irritability measurement, and you 
+> must also add a time variable (i.e., 0, 1, or 2))
+
+```{r}
+dat <- data.frame(id  = c( 1, 2, 3, 4, 5, 6),
+                  age = c(47,52,35,28,62,44),
+                  sex = factor(c("M","M","F","M","F","F")),
+                  wt_t0 = c(278, 340, 239, 290, 244, 220),
+                  wt_t1 = c(230, 302, 231, 277, 245, 201),
+                  wt_t2 = c(211, 295, 231, 282, 243, 182),
+                  irr_t0 = factor(c(0, 1, 1, 0, 0, 0), levels=0:10, ordered=TRUE),
+                  irr_t1 = factor(c(5, 3, 2, 1, 5, 7), levels=0:10, ordered=TRUE),
+                  irr_t2 = factor(c(4, 3, 3, 1, 4, 6), levels=0:10, ordered=TRUE))
+```
+
+
+---
+
+## Exercise 5
+
+> Repeat the above task using the 'reshape' function.
+
+---
+
+
