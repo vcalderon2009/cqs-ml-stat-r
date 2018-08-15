@@ -8,6 +8,8 @@ output: pdf_document
 ```{r echo=FALSE}
 rm(list = ls())
 library('reshape2')
+# Seed
+set.seed(0)
 ```
 
 
@@ -81,6 +83,29 @@ demo <- data.frame(id = 1:20,
                    married = sample(c(T,F), 20, replace=TRUE, prob=c(0.5,0.5)),
                    income  = rnorm(20, 75000, 10000),
                    state   = sample(state.abb, 20, replace=TRUE))
+```
+
+Let's examine the dataframe first
+```{r}
+head(demo)
+```
+and its dimensions:
+```{r}
+dim(demo)
+```
+What about `data_melt`:
+```{r}
+dim(data_melt)
+```
+
+Let's merge these two dataframes
+```{r}
+data_merged <-merge(data_melt, subset(demo, select=c('id','married')), by = "id", all.x = TRUE)
+head(data_merged)
+```
+Let's look at the *unique* elements for the column `married`:
+```{r}
+unique(data_merged$married)
 ```
 
 
