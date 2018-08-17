@@ -1,0 +1,82 @@
+---
+title: "Day 05 - Exercise 01 - Inference and Predictions"
+author: "Victor Calderon"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Removing previous environment
+rm(list = ls())
+
+## Loading packages
+
+```
+
+# Preamble
+The exercises here are taken from the `inferences-vs-predictions.R` file in the 
+`scripts/day_05` directory.
+
+In order to be able to run the code in here, you need to run the following:
+
+```r
+## Installing packages
+install.packages('caret')
+install.packages('fGarch')
+install.packages('boot')
+
+## Loading packages
+library('caret')
+library('fGarch')
+library('boot')
+```
+
+These packages are needed in order to run some of the commands.
+
+We can now **load** the necessary libraries:
+```{r echo=FALSE, include=FALSE}
+library('caret')
+library('fGarch')
+library('boot')
+```
+
+---
+
+# Model assumptions
+
+## Exercise 01
+
+> Redo the simulations above. Instead of heteroscedastic errors, let the 
+> errors have a skewed normal distribution (use 'fGarch::rsnorm').
+
+## Exercise 02
+
+> Redo the simulations above. Instead of heteroscedastic errors, let the 
+> errors have a normal distribution. But, assume that 'y' is also related
+> to a second factor 'z' that is negatively correlated with 'x', and that
+> 'z' is unmeasured (can't be used for inference/prediction). 'z' is an
+> unmeasured confounder.
+
+---
+
+# Bootstrap
+
+## Exercise 03
+
+> Rerun the simulations above under the unmeasured confounding scenario
+> (question 2 in the modeling assumptions lab). Does the bootstrap interval
+> have better coverage than the Wald interval?
+
+
+---
+
+# Sample bias
+
+## Exercise 04
+
+> Redo the simulation above. Does the bootstrap interval have better actual
+> coverage than the Wald interval under sample bias?
+
+---
